@@ -1,0 +1,526 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E30667231E15F226009BC296 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667221E15F226009BC296 /* AppDelegate.swift */; };
+		E30667251E15F226009BC296 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667241E15F226009BC296 /* ViewController.swift */; };
+		E30667281E15F226009BC296 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E30667261E15F226009BC296 /* Main.storyboard */; };
+		E306672A1E15F226009BC296 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E30667291E15F226009BC296 /* Assets.xcassets */; };
+		E306672D1E15F226009BC296 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E306672B1E15F226009BC296 /* LaunchScreen.storyboard */; };
+		E30667381E15F226009BC296 /* WPFRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667371E15F226009BC296 /* WPFRefreshTests.swift */; };
+		E30667431E15F226009BC296 /* WPFRefreshUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667421E15F226009BC296 /* WPFRefreshUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E30667341E15F226009BC296 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E30667171E15F225009BC296 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E306671E1E15F226009BC296;
+			remoteInfo = WPFRefresh;
+		};
+		E306673F1E15F226009BC296 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E30667171E15F225009BC296 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E306671E1E15F226009BC296;
+			remoteInfo = WPFRefresh;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E306671F1E15F226009BC296 /* WPFRefresh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WPFRefresh.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E30667221E15F226009BC296 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E30667241E15F226009BC296 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E30667271E15F226009BC296 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E30667291E15F226009BC296 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E306672C1E15F226009BC296 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E306672E1E15F226009BC296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E30667331E15F226009BC296 /* WPFRefreshTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WPFRefreshTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E30667371E15F226009BC296 /* WPFRefreshTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPFRefreshTests.swift; sourceTree = "<group>"; };
+		E30667391E15F226009BC296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E306673E1E15F226009BC296 /* WPFRefreshUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WPFRefreshUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E30667421E15F226009BC296 /* WPFRefreshUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPFRefreshUITests.swift; sourceTree = "<group>"; };
+		E30667441E15F226009BC296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E306671C1E15F226009BC296 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E30667301E15F226009BC296 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E306673B1E15F226009BC296 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E30667161E15F225009BC296 = {
+			isa = PBXGroup;
+			children = (
+				E30667211E15F226009BC296 /* WPFRefresh */,
+				E30667361E15F226009BC296 /* WPFRefreshTests */,
+				E30667411E15F226009BC296 /* WPFRefreshUITests */,
+				E30667201E15F226009BC296 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E30667201E15F226009BC296 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E306671F1E15F226009BC296 /* WPFRefresh.app */,
+				E30667331E15F226009BC296 /* WPFRefreshTests.xctest */,
+				E306673E1E15F226009BC296 /* WPFRefreshUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E30667211E15F226009BC296 /* WPFRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				E30667221E15F226009BC296 /* AppDelegate.swift */,
+				E30667241E15F226009BC296 /* ViewController.swift */,
+				E30667261E15F226009BC296 /* Main.storyboard */,
+				E30667291E15F226009BC296 /* Assets.xcassets */,
+				E306672B1E15F226009BC296 /* LaunchScreen.storyboard */,
+				E306672E1E15F226009BC296 /* Info.plist */,
+			);
+			path = WPFRefresh;
+			sourceTree = "<group>";
+		};
+		E30667361E15F226009BC296 /* WPFRefreshTests */ = {
+			isa = PBXGroup;
+			children = (
+				E30667371E15F226009BC296 /* WPFRefreshTests.swift */,
+				E30667391E15F226009BC296 /* Info.plist */,
+			);
+			path = WPFRefreshTests;
+			sourceTree = "<group>";
+		};
+		E30667411E15F226009BC296 /* WPFRefreshUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E30667421E15F226009BC296 /* WPFRefreshUITests.swift */,
+				E30667441E15F226009BC296 /* Info.plist */,
+			);
+			path = WPFRefreshUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E306671E1E15F226009BC296 /* WPFRefresh */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E30667471E15F226009BC296 /* Build configuration list for PBXNativeTarget "WPFRefresh" */;
+			buildPhases = (
+				E306671B1E15F226009BC296 /* Sources */,
+				E306671C1E15F226009BC296 /* Frameworks */,
+				E306671D1E15F226009BC296 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WPFRefresh;
+			productName = WPFRefresh;
+			productReference = E306671F1E15F226009BC296 /* WPFRefresh.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E30667321E15F226009BC296 /* WPFRefreshTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E306674A1E15F226009BC296 /* Build configuration list for PBXNativeTarget "WPFRefreshTests" */;
+			buildPhases = (
+				E306672F1E15F226009BC296 /* Sources */,
+				E30667301E15F226009BC296 /* Frameworks */,
+				E30667311E15F226009BC296 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E30667351E15F226009BC296 /* PBXTargetDependency */,
+			);
+			name = WPFRefreshTests;
+			productName = WPFRefreshTests;
+			productReference = E30667331E15F226009BC296 /* WPFRefreshTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E306673D1E15F226009BC296 /* WPFRefreshUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E306674D1E15F226009BC296 /* Build configuration list for PBXNativeTarget "WPFRefreshUITests" */;
+			buildPhases = (
+				E306673A1E15F226009BC296 /* Sources */,
+				E306673B1E15F226009BC296 /* Frameworks */,
+				E306673C1E15F226009BC296 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E30667401E15F226009BC296 /* PBXTargetDependency */,
+			);
+			name = WPFRefreshUITests;
+			productName = WPFRefreshUITests;
+			productReference = E306673E1E15F226009BC296 /* WPFRefreshUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E30667171E15F225009BC296 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = wpf;
+				TargetAttributes = {
+					E306671E1E15F226009BC296 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+					E30667321E15F226009BC296 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = E306671E1E15F226009BC296;
+					};
+					E306673D1E15F226009BC296 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = E306671E1E15F226009BC296;
+					};
+				};
+			};
+			buildConfigurationList = E306671A1E15F225009BC296 /* Build configuration list for PBXProject "WPFRefresh" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E30667161E15F225009BC296;
+			productRefGroup = E30667201E15F226009BC296 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E306671E1E15F226009BC296 /* WPFRefresh */,
+				E30667321E15F226009BC296 /* WPFRefreshTests */,
+				E306673D1E15F226009BC296 /* WPFRefreshUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E306671D1E15F226009BC296 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E306672D1E15F226009BC296 /* LaunchScreen.storyboard in Resources */,
+				E306672A1E15F226009BC296 /* Assets.xcassets in Resources */,
+				E30667281E15F226009BC296 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E30667311E15F226009BC296 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E306673C1E15F226009BC296 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E306671B1E15F226009BC296 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E30667251E15F226009BC296 /* ViewController.swift in Sources */,
+				E30667231E15F226009BC296 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E306672F1E15F226009BC296 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E30667381E15F226009BC296 /* WPFRefreshTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E306673A1E15F226009BC296 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E30667431E15F226009BC296 /* WPFRefreshUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E30667351E15F226009BC296 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E306671E1E15F226009BC296 /* WPFRefresh */;
+			targetProxy = E30667341E15F226009BC296 /* PBXContainerItemProxy */;
+		};
+		E30667401E15F226009BC296 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E306671E1E15F226009BC296 /* WPFRefresh */;
+			targetProxy = E306673F1E15F226009BC296 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E30667261E15F226009BC296 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E30667271E15F226009BC296 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E306672B1E15F226009BC296 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E306672C1E15F226009BC296 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E30667451E15F226009BC296 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E30667461E15F226009BC296 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E30667481E15F226009BC296 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = WPFRefresh/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alex.WPFRefresh;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		E30667491E15F226009BC296 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = WPFRefresh/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alex.WPFRefresh;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		E306674B1E15F226009BC296 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = WPFRefreshTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alex.WPFRefreshTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WPFRefresh.app/WPFRefresh";
+			};
+			name = Debug;
+		};
+		E306674C1E15F226009BC296 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = WPFRefreshTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alex.WPFRefreshTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WPFRefresh.app/WPFRefresh";
+			};
+			name = Release;
+		};
+		E306674E1E15F226009BC296 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = WPFRefreshUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alex.WPFRefreshUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = WPFRefresh;
+			};
+			name = Debug;
+		};
+		E306674F1E15F226009BC296 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = WPFRefreshUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alex.WPFRefreshUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = WPFRefresh;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E306671A1E15F225009BC296 /* Build configuration list for PBXProject "WPFRefresh" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E30667451E15F226009BC296 /* Debug */,
+				E30667461E15F226009BC296 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E30667471E15F226009BC296 /* Build configuration list for PBXNativeTarget "WPFRefresh" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E30667481E15F226009BC296 /* Debug */,
+				E30667491E15F226009BC296 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E306674A1E15F226009BC296 /* Build configuration list for PBXNativeTarget "WPFRefreshTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E306674B1E15F226009BC296 /* Debug */,
+				E306674C1E15F226009BC296 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E306674D1E15F226009BC296 /* Build configuration list for PBXNativeTarget "WPFRefreshUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E306674E1E15F226009BC296 /* Debug */,
+				E306674F1E15F226009BC296 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E30667171E15F225009BC296 /* Project object */;
+}
