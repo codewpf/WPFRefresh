@@ -14,6 +14,8 @@
 		E306672D1E15F226009BC296 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E306672B1E15F226009BC296 /* LaunchScreen.storyboard */; };
 		E30667381E15F226009BC296 /* WPFRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667371E15F226009BC296 /* WPFRefreshTests.swift */; };
 		E30667431E15F226009BC296 /* WPFRefreshUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667421E15F226009BC296 /* WPFRefreshUITests.swift */; };
+		E30667511E15F24A009BC296 /* LCTTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667501E15F24A009BC296 /* LCTTimer.swift */; };
+		E30667531E17652E009BC296 /* LCTRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667521E17652E009BC296 /* LCTRefresh.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		E306673E1E15F226009BC296 /* WPFRefreshUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WPFRefreshUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E30667421E15F226009BC296 /* WPFRefreshUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPFRefreshUITests.swift; sourceTree = "<group>"; };
 		E30667441E15F226009BC296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E30667501E15F24A009BC296 /* LCTTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCTTimer.swift; sourceTree = "<group>"; };
+		E30667521E17652E009BC296 /* LCTRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCTRefresh.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,11 +102,13 @@
 			isa = PBXGroup;
 			children = (
 				E30667221E15F226009BC296 /* AppDelegate.swift */,
+				E30667501E15F24A009BC296 /* LCTTimer.swift */,
 				E30667241E15F226009BC296 /* ViewController.swift */,
 				E30667261E15F226009BC296 /* Main.storyboard */,
 				E30667291E15F226009BC296 /* Assets.xcassets */,
 				E306672B1E15F226009BC296 /* LaunchScreen.storyboard */,
 				E306672E1E15F226009BC296 /* Info.plist */,
+				E30667521E17652E009BC296 /* LCTRefresh.swift */,
 			);
 			path = WPFRefresh;
 			sourceTree = "<group>";
@@ -193,6 +199,7 @@
 				TargetAttributes = {
 					E306671E1E15F226009BC296 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = GCZ69TW9QP;
 						ProvisioningStyle = Automatic;
 					};
 					E30667321E15F226009BC296 = {
@@ -260,7 +267,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E30667251E15F226009BC296 /* ViewController.swift in Sources */,
+				E30667531E17652E009BC296 /* LCTRefresh.swift in Sources */,
 				E30667231E15F226009BC296 /* AppDelegate.swift in Sources */,
+				E30667511E15F24A009BC296 /* LCTTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +419,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GCZ69TW9QP;
 				INFOPLIST_FILE = WPFRefresh/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alex.WPFRefresh;
@@ -422,6 +432,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GCZ69TW9QP;
 				INFOPLIST_FILE = WPFRefresh/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alex.WPFRefresh;
