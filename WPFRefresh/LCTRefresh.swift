@@ -65,9 +65,9 @@ class LCTRefresh: UIView {
     var endRefreshingCompletionBlock: LCTRefreshEndRefreshCompletionBlock?
     
     /// 当前状态
-    private var privateState: LCTRefreshState?
+    fileprivate var privateState: LCTRefreshState?
     
-    private var privatePullingPercent: Float?
+    fileprivate var privatePullingPercent: Float?
     
     //MARK: - 初始化
     override init(frame: CGRect) {
@@ -100,9 +100,7 @@ class LCTRefresh: UIView {
     
     /// 当前state "计算属性"
     fileprivate var state: LCTRefreshState {
-        get {
-            return self.privateState!
-        }
+        get { return self.privateState! }
         set {
             self.privateState = newValue
             DispatchQueue.main.async {
@@ -110,21 +108,15 @@ class LCTRefresh: UIView {
             }
         }
     }
-
+    
     /// 刷新比例 "计算属性"
     fileprivate var pullingPercent: Float {
-        get {
-            return self.privatePullingPercent!
-        }
+        get { return self.privatePullingPercent! }
         set {
             self.privatePullingPercent = newValue
         }
     }
     
-    
-}
-
-extension LCTRefresh {
     
     override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
@@ -162,7 +154,7 @@ extension LCTRefresh {
         
         // 隐藏状态下也要处理
         if keyPath == LCTRefreshConst.kKeyPathContentSize {
-            self.scrollViewContentSizeDidChange()
+            self.scrollViewContentSizeDidChange(change)
         }
         
         // 隐藏情况
@@ -170,21 +162,17 @@ extension LCTRefresh {
             return
         }
         if keyPath == LCTRefreshConst.kKeyPathContentOffset {
-            self.scrollViewContentOffsetDidChange()
+            self.scrollViewContentOffsetDidChange(change)
         } else if keyPath == LCTRefreshConst.kKeyPathPanState {
-            self.scrollViewPanStateDidChange()
+            self.scrollViewPanStateDidChange(change)
         }
         
     }
     
-    fileprivate func scrollViewContentOffsetDidChange() {}
-    fileprivate func scrollViewContentSizeDidChange() {}
-    fileprivate func scrollViewPanStateDidChange() {}
-
-}
-
-
-extension LCTRefresh {
+    fileprivate func scrollViewContentOffsetDidChange(_ change: [NSKeyValueChangeKey : Any]?) {}
+    fileprivate func scrollViewContentSizeDidChange(_ change: [NSKeyValueChangeKey : Any]?) {}
+    fileprivate func scrollViewPanStateDidChange(_ change: [NSKeyValueChangeKey : Any]?) {}
+    
 
     /// 开始刷新
     fileprivate func beginRefreshing(completion: ((Swift.Void) -> Swift.Void)? = nil) {
@@ -217,14 +205,14 @@ extension LCTRefresh {
     }
     
     /// 子类 执行刷新回调
-    private func executeRefreshingBlock() {
+    fileprivate func executeRefreshingBlock() {
         DispatchQueue.main.async {
-            if self.refreshingBlock != nil {
-                self.refreshingBlock!()
+            if let block = self.refreshingBlock {
+                block()
             }
             
-            if self.beginRefreshingCompletionBlock != nil {
-                self.beginRefreshingCompletionBlock!()
+            if let block = self.beginRefreshingCompletionBlock {
+                block()
             }
         }
     }
@@ -235,11 +223,393 @@ extension LCTRefresh {
 
 class LCTRefreshHeader: LCTRefresh {
     
+    fileprivate var ignoredScrollViewContentInsetTop: CGFloat = 0.0
+    private var insetTDeldta: CGFloat = 0.0
+    
+    static func header(block refreshingBlock: @escaping LCTRefreshRefreshingBlock) -> LCTRefreshHeader {
+        let header = LCTRefreshHeader()
+        header.refreshingBlock = refreshingBlock
+        return header
+    }
+    
+    override func prepare() {
+        super.prepare()
+        
+        self.wpf_h = CGFloat(LCTRefreshConst.kHeaderHeight)
+    }
+    
+    override func placeSubviews() {
+        super.placeSubviews()
+        
+        self.wpf_y = -self.wpf_h - self.ignoredScrollViewContentInsetTop
+    }
+    
+    fileprivate override func scrollViewContentOffsetDidChange(_ change: [NSKeyValueChangeKey : Any]?) {
+        super.scrollViewContentOffsetDidChange(change)
+        
+        if self.state == .refreshing {
+            guard self.window != nil else {
+                return
+            }
+            
+            
+            // sectionheader停留解决
+            guard let scroll = self.scrollView , let origin = self.originalInset else {
+                return
+            }
+            var insetT: CGFloat = -scroll.wpf_offsetY > origin.top ? -scroll.wpf_offsetY : origin.top
+            insetT = insetT > self.wpf_h + origin.top ? self.wpf_h + origin.top : insetT
+            scroll.wpf_insetT = insetT
+            self.insetTDeldta = origin.top - insetT
+            return
+        }
+        
+        // 跳转到下一个控制器时，contentInset可能会变
+        self.originalInset = self.scrollView?.contentInset
+        // 当前的contentOffset
+        let offsetY: CGFloat = self.scrollView?.wpf_offsetY ?? 0.0
+        // 头部控件刚好出现的offsetY
+        let happenOffsetY: CGFloat = -(self.originalInset?.top ?? 0.0)
+        // 如果是向上滚动到看不见头部控件，直接返回
+        if offsetY > happenOffsetY {
+            return
+        }
+        
+        // 普通 和 即将刷新 的临界点
+        let normal2pullingOffsetY: CGFloat = happenOffsetY - self.wpf_h
+        let pullingPercent: Float = Float((happenOffsetY - offsetY) / self.wpf_h)
+        
+        
+        if self.scrollView?.isDragging ?? false { // 正在拖拽 解包默认false
+            self.pullingPercent = pullingPercent
+            if self.state == .idle && offsetY < normal2pullingOffsetY {
+                self.state = .pulling
+            } else if self.state == .pulling && offsetY > normal2pullingOffsetY {
+                self.state = .idle
+            }
+        } else if self.state == .pulling { // 即将刷新 && 手松开
+            self.beginRefreshing()
+        } else if pullingPercent < 1 {
+            self.pullingPercent = pullingPercent
+        }
+        
+    }
+    
+    
+    override var state: LCTRefreshState {
+        get { return self.privateState! }
+        set {
+            let oldState = self.privateState
+            guard oldState != newValue else {
+                return
+            }
+            super.state = newValue
+
+            if newValue == .idle {
+                guard oldState == .refreshing else {
+                    return
+                }
+                
+                UIView.animate(withDuration: LCTRefreshConst.kAnimationDuration, animations: { 
+                    self.scrollView?.wpf_insetT += self.insetTDeldta
+                }, completion: { (_) in
+                    self.pullingPercent = 0.0
+                    if let block = self.endRefreshingCompletionBlock {
+                        block()
+                    }
+                })
+            } else if newValue == .refreshing {
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: LCTRefreshConst.kAnimationDuration, animations: { 
+                        let top: CGFloat = self.originalInset?.top ?? 0.0 + self.wpf_h
+                        self.scrollView?.wpf_insetT = top
+                        self.scrollView?.contentOffset = CGPoint(x: 0, y: -top)
+                    }, completion: { (_) in
+                        self.executeRefreshingBlock()
+                    })
+                }
+            }
+        }
+    }
+    
+    
+    override fileprivate func endRefreshing(completion: ((Void) -> Void)?) {
+        self.endRefreshingCompletionBlock = completion
+        DispatchQueue.main.async {
+            self.state = .idle
+        }
+    }
+    
 }
 
 class LCTRefreshFooter: LCTRefresh {
     
+    fileprivate var ignoredScrollViewContentInsetTop: CGFloat = 0.0
+    
+    fileprivate var automaticallyRefresh: Bool = true
+    fileprivate var isAutomaticallyRefresh: Bool {
+        get {
+            return self.automaticallyRefresh
+        }
+    }
+    
+    fileprivate var triggerAutomaticallyRefreshPercent: CGFloat = 1.0
+    
+    static func footer(block refreshingBlock: @escaping LCTRefreshRefreshingBlock) -> LCTRefreshFooter {
+        let footer = LCTRefreshFooter()
+        footer.refreshingBlock = refreshingBlock
+        return footer
+    }
+    
+    override func prepare() {
+        super.prepare()
+        
+        self.wpf_h = CGFloat(LCTRefreshConst.kFooterHeight)
+    }
+    
+    func endRefreshingWithNoMoreData() {
+        self.state = .nomoredata
+    }
+    
+    func resetNoMoreData() {
+        self.state = .idle
+    }
+    
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        
+        if newSuperview != nil {
+            if self.isHidden == false {
+                self.scrollView?.wpf_insetB += self.wpf_h
+            }
+            self.wpf_y = self.scrollView?.wpf_sizeH ?? 0.0
+        } else {
+            if self.isHidden == false {
+                self.scrollView?.wpf_insetB -= self.wpf_h
+            }
+        }
+    }
+    
+    fileprivate override func scrollViewContentSizeDidChange(_ change: [NSKeyValueChangeKey : Any]?) {
+        super.scrollViewContentSizeDidChange(change)
+        
+        self.wpf_y = self.scrollView?.wpf_sizeH ?? 0.0
+    }
+    fileprivate override func scrollViewContentOffsetDidChange(_ change: [NSKeyValueChangeKey : Any]?) {
+        super.scrollViewContentOffsetDidChange(change)
+        guard self.state == .idle, self.automaticallyRefresh == true, self.wpf_y != 0, let scroll = self.scrollView else {
+            return
+        }
+        
+        if scroll.wpf_insetT + scroll.wpf_sizeH > scroll.wpf_h {
+            
+            if scroll.wpf_offsetY >= scroll.wpf_sizeH - scroll.wpf_h + self.wpf_h*self.triggerAutomaticallyRefreshPercent + scroll.wpf_insetB - self.wpf_h {
+                // 防止松手连续调用
+                let old = (change?[.oldKey] as? NSValue)?.cgPointValue ?? CGPoint(x: 0, y: 0)
+                let new = (change?[.newKey] as? NSValue)?.cgPointValue ?? CGPoint(x: 0, y: 0)
+                
+                guard new.y > old.y  else {
+                    return
+                }
+                self.beginRefreshing()
+            }
+        }
+    }
+    fileprivate override func scrollViewPanStateDidChange(_ change: [NSKeyValueChangeKey : Any]?) {
+        super.scrollViewPanStateDidChange(change)
+        
+        guard self.state == .idle, let scroll = self.scrollView else {
+            return
+        }
+        
+        if scroll.panGestureRecognizer.state == .ended {
+            if scroll.wpf_insetT + scroll.wpf_sizeH <= scroll.wpf_h {
+                if scroll.wpf_offsetY >= -scroll.wpf_insetT {
+                    self.beginRefreshing()
+                }
+            } else {
+                if scroll.wpf_offsetY >= scroll.wpf_sizeH + scroll.wpf_insetB - scroll.wpf_h {
+                    self.beginRefreshing()
+                }
+            }
+        }
+        
+    }
+    
+    override var state: LCTRefreshState {
+        get { return self.privateState! }
+        set {
+            let oldState = self.privateState
+            guard oldState != newValue else {
+                return
+            }
+            super.state = newValue
+            if newValue == .refreshing {
+                DispatchQueue.main.asyncAfter(deadline: .init(uptimeNanoseconds: 1), execute: {
+                    self.executeRefreshingBlock()
+                })
+            } else if newValue == .nomoredata || newValue == .idle {
+                if oldState == .refreshing {
+                    if let block = self.endRefreshingCompletionBlock {
+                        block()
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//MARK: - Extension
+extension UIView {
+    public var wpf_x: CGFloat {
+        get { return self.frame.origin.x }
+        set {
+            var frame: CGRect = self.frame
+            frame.origin.x = newValue
+            self.frame = frame
+        }
+    }
+    
+    public var wpf_y: CGFloat {
+        get { return self.frame.origin.y }
+        set {
+            var frame: CGRect = self.frame
+            frame.origin.y = newValue
+            self.frame = frame
+        }
+    }
+    
+    public var wpf_origin: CGPoint {
+        get { return self.frame.origin }
+        set {
+            var frame: CGRect = self.frame
+            frame.origin = newValue
+            self.frame = frame
+        }
+    }
+    
+    public var wpf_w: CGFloat {
+        get { return self.frame.size.width }
+        set {
+            var frame: CGRect = self.frame
+            frame.size.width = newValue
+            self.frame = frame
+        }
+    }
+    
+    public var wpf_h: CGFloat {
+        get { return self.frame.size.height }
+        set {
+            var frame: CGRect = self.frame
+            frame.size.height = newValue
+            self.frame = frame
+        }
+    }
+    
+    public var wpf_size: CGSize {
+        get { return self.frame.size }
+        set {
+            var frame: CGRect = self.frame
+            frame.size = newValue
+            self.frame = frame
+        }
+    }
+}
+
+extension UIScrollView {
+    public var wpf_insetT: CGFloat {
+        get { return self.contentInset.top }
+        set {
+            var inset: UIEdgeInsets = self.contentInset
+            inset.top = newValue
+            self.contentInset = inset
+        }
+    }
+    
+    public var wpf_insetB: CGFloat {
+        get { return self.contentInset.bottom }
+        set {
+            var inset: UIEdgeInsets = self.contentInset
+            inset.bottom = newValue
+            self.contentInset = inset
+        }
+    }
+    public var wpf_insetL: CGFloat {
+        get { return self.contentInset.left }
+        set {
+            var inset: UIEdgeInsets = self.contentInset
+            inset.left = newValue
+            self.contentInset = inset
+        }
+    }
+
+    public var wpf_insetR: CGFloat {
+        get { return self.contentInset.right }
+        set {
+            var inset: UIEdgeInsets = self.contentInset
+            inset.right = newValue
+            self.contentInset = inset
+        }
+    }
+
+    public var wpf_offsetX: CGFloat {
+        get { return self.contentOffset.x }
+        set {
+            var offset: CGPoint = self.contentOffset
+            offset.x = newValue
+            self.contentOffset = offset
+        }
+    }
+    
+    public var wpf_offsetY: CGFloat {
+        get { return self.contentOffset.y }
+        set {
+            var offset: CGPoint = self.contentOffset
+            offset.y = newValue
+            self.contentOffset = offset
+        }
+    }
+
+    public var wpf_sizeW: CGFloat {
+        get { return self.contentSize.width }
+        set {
+            var size: CGSize = self.contentSize
+            size.width = newValue
+            self.contentSize = size
+        }
+    }
+    
+    public var wpf_sizeH: CGFloat {
+        get { return self.contentSize.height }
+        set {
+            var size: CGSize = self.contentSize
+            size.height = newValue
+            self.contentSize = size
+        }
+    }
+}
+
+
+
+
+
 
 
 
