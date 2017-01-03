@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import ObjectiveC
+
+
 /// 刷新状态
 enum LCTRefreshState {
     /// "普通闲置" 状态
@@ -50,7 +53,7 @@ typealias LCTRefreshEndRefreshCompletionBlock = () -> Void
 
 class LCTRefresh: UIView {
     
-    fileprivate var pan: UIPanGestureRecognizer?
+    var pan: UIPanGestureRecognizer?
     
     /// 父控件
     var scrollView: UIScrollView?
@@ -72,6 +75,7 @@ class LCTRefresh: UIView {
     //MARK: - 初始化
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         
         self.prepare()
         
@@ -119,6 +123,7 @@ class LCTRefresh: UIView {
     
     
     override func willMove(toSuperview newSuperview: UIView?) {
+        
         super.willMove(toSuperview: newSuperview)
         guard newSuperview is UIScrollView else {
             return
@@ -175,7 +180,7 @@ class LCTRefresh: UIView {
     
 
     /// 开始刷新
-    fileprivate func beginRefreshing(completion: ((Swift.Void) -> Swift.Void)? = nil) {
+    func beginRefreshing(completion: ((Swift.Void) -> Swift.Void)? = nil) {
         self.beginRefreshingCompletionBlock = completion
         
         UIView.animate(withDuration: LCTRefreshConst.kAnimationDuration) {
@@ -195,7 +200,7 @@ class LCTRefresh: UIView {
     }
     
     /// 结束刷新
-    fileprivate func endRefreshing(completion: ((Swift.Void) -> Swift.Void)? = nil) {
+    func endRefreshing(completion: ((Swift.Void) -> Swift.Void)? = nil) {
         self.endRefreshingCompletionBlock = completion
         self.state = .idle
     }
@@ -223,8 +228,8 @@ class LCTRefresh: UIView {
 
 class LCTRefreshHeader: LCTRefresh {
     
-    fileprivate var ignoredScrollViewContentInsetTop: CGFloat = 0.0
-    private var insetTDeldta: CGFloat = 0.0
+    var ignoredScrollViewContentInsetTop: CGFloat = 0.0
+    var insetTDeldta: CGFloat = 0.0
     
     static func header(block refreshingBlock: @escaping LCTRefreshRefreshingBlock) -> LCTRefreshHeader {
         let header = LCTRefreshHeader()
@@ -252,7 +257,6 @@ class LCTRefreshHeader: LCTRefresh {
                 return
             }
             
-            
             // sectionheader停留解决
             guard let scroll = self.scrollView , let origin = self.originalInset else {
                 return
@@ -269,7 +273,7 @@ class LCTRefreshHeader: LCTRefresh {
         // 当前的contentOffset
         let offsetY: CGFloat = self.scrollView?.wpf_offsetY ?? 0.0
         // 头部控件刚好出现的offsetY
-        let happenOffsetY: CGFloat = -(self.originalInset?.top ?? 0.0)
+        let happenOffsetY: CGFloat = -(self.originalInset?.top)!
         // 如果是向上滚动到看不见头部控件，直接返回
         if offsetY > happenOffsetY {
             return
@@ -299,6 +303,7 @@ class LCTRefreshHeader: LCTRefresh {
     override var state: LCTRefreshState {
         get { return self.privateState! }
         set {
+            
             let oldState = self.privateState
             guard oldState != newValue else {
                 return
@@ -321,7 +326,7 @@ class LCTRefreshHeader: LCTRefresh {
             } else if newValue == .refreshing {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: LCTRefreshConst.kAnimationDuration, animations: { 
-                        let top: CGFloat = self.originalInset?.top ?? 0.0 + self.wpf_h
+                        let top: CGFloat = ((self.originalInset?.top)!  + self.wpf_h)
                         self.scrollView?.wpf_insetT = top
                         self.scrollView?.contentOffset = CGPoint(x: 0, y: -top)
                     }, completion: { (_) in
@@ -333,7 +338,7 @@ class LCTRefreshHeader: LCTRefresh {
     }
     
     
-    override fileprivate func endRefreshing(completion: ((Void) -> Void)?) {
+    override func endRefreshing(completion: ((Swift.Void) -> Swift.Void)? = nil) {
         self.endRefreshingCompletionBlock = completion
         DispatchQueue.main.async {
             self.state = .idle
@@ -344,16 +349,16 @@ class LCTRefreshHeader: LCTRefresh {
 
 class LCTRefreshFooter: LCTRefresh {
     
-    fileprivate var ignoredScrollViewContentInsetTop: CGFloat = 0.0
+    var ignoredScrollViewContentInsetTop: CGFloat = 0.0
     
-    fileprivate var automaticallyRefresh: Bool = true
-    fileprivate var isAutomaticallyRefresh: Bool {
+    var automaticallyRefresh: Bool = true
+    var isAutomaticallyRefresh: Bool {
         get {
             return self.automaticallyRefresh
         }
     }
     
-    fileprivate var triggerAutomaticallyRefreshPercent: CGFloat = 1.0
+    var triggerAutomaticallyRefreshPercent: CGFloat = 1.0
     
     static func footer(block refreshingBlock: @escaping LCTRefreshRefreshingBlock) -> LCTRefreshFooter {
         let footer = LCTRefreshFooter()
@@ -458,6 +463,24 @@ class LCTRefreshFooter: LCTRefresh {
         }
     }
     
+    override var isHidden: Bool {
+        get {
+            return super.isHidden
+        }
+        set {
+            let last: Bool = super.isHidden
+            super.isHidden = newValue
+            if last == false && newValue == true {
+                self.state = .idle
+                self.scrollView?.wpf_insetB -= self.wpf_h
+            } else if last == true && newValue == false {
+                self.scrollView?.wpf_insetB += self.wpf_h
+
+                self.wpf_y = self.scrollView?.wpf_sizeH ?? 0
+            }
+        }
+    }
+    
     
     
     
@@ -473,10 +496,49 @@ class LCTRefreshFooter: LCTRefresh {
 
 
 
+//MARK: - Implement Extension
+extension UIScrollView {
+    
+    private struct AssociatedKey {
+        static var header: UInt8 = 0
+        static var footer: UInt8 = 0
+        static let keyHeader: String = "header"
+        static let keyFooter: String = "footer"
+    }
+    
+    var header: LCTRefreshHeader? {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedKey.header) as? LCTRefreshHeader
+        }
+        set {
+            
+            if newValue != self.header {
+                self.header?.removeFromSuperview()
+                self.insertSubview(newValue!, at: 0)
+                
+                self.willChangeValue(forKey: AssociatedKey.keyHeader)
+                objc_setAssociatedObject(self, &AssociatedKey.header, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                self.didChangeValue(forKey: AssociatedKey.keyHeader)
+            }
+            
+        }
+    }
+    
+    var footer: LCTRefreshFooter? {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedKey.footer) as? LCTRefreshFooter
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedKey.footer, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    
+    
+}
 
 
-
-//MARK: - Extension
+//MARK: - Helper Extension
 extension UIView {
     public var wpf_x: CGFloat {
         get { return self.frame.origin.x }
