@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     let tableView: UITableView = UITableView(frame: .zero, style: .plain)
-    var dataSource: [String] = ["111","222","333"]
+    var dataSource: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,30 +21,49 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         self.tableView.dataSource = self
         self.tableView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height-64)
+        self.tableView.tableFooterView = UIView()
         self.view.addSubview(self.tableView)
         
         self.tableView.header = LCTRefreshHeader.header { [weak self] in
-            self?.addData()
+            self?.datas(true)
         }
         
+        self.tableView.footer = LCTRefreshFooter.footer { [weak self] in
+            self?.datas(false)
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) { 
+            self.datas(true)
+        }
     }
     
-    func addData() {
-        
-        
-        
-
-        let random: UInt32 = arc4random()%10
-        for i in 0..<random {
-            self.dataSource += ["\(i)\(i)\(i)"]
-        }
+    var count = 0
+    
+    func datas(_ remove: Bool) {
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) { [weak self] in
-            print("count --------- \(self?.dataSource.count)")
-            self?.tableView.reloadData()
-            self?.tableView.header?.endRefreshing()
-        }
+            
+            if remove {
+                self?.dataSource.removeAll()
+            }
+            
+            let random: UInt32 = arc4random()%10+10
+            for i in 0..<random {
+                self?.dataSource += ["\(i)\(i)\(i)"]
+            }
 
+            self?.tableView.reloadData()
+            if remove {
+                self?.count = 0
+                self?.tableView.header?.endRefreshing()
+            } else {
+                self?.count += 1
+                self?.tableView.footer?.endRefreshing()
+                if self?.count == 2{
+                    self?.tableView.removeFooter()
+                }
+            }
+        }
         
     }
     
@@ -60,8 +79,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
         }
+        print(indexPath.row,self.dataSource.count)
         cell?.textLabel?.text = "\(indexPath.row) --- \(self.dataSource[indexPath.row])"
-        print(cell?.textLabel?.text ?? "")
         return cell!
     }
 

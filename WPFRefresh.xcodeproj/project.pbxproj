@@ -16,6 +16,7 @@
 		E30667431E15F226009BC296 /* WPFRefreshUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667421E15F226009BC296 /* WPFRefreshUITests.swift */; };
 		E30667511E15F24A009BC296 /* LCTTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667501E15F24A009BC296 /* LCTTimer.swift */; };
 		E30667531E17652E009BC296 /* LCTRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667521E17652E009BC296 /* LCTRefresh.swift */; };
+		E3DE79C61E1CA903008BAB59 /* LCTRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E3DE79C51E1CA903008BAB59 /* LCTRefresh.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		E30667441E15F226009BC296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E30667501E15F24A009BC296 /* LCTTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCTTimer.swift; sourceTree = "<group>"; };
 		E30667521E17652E009BC296 /* LCTRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCTRefresh.swift; sourceTree = "<group>"; };
+		E3DE79C51E1CA903008BAB59 /* LCTRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LCTRefresh.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				E306672B1E15F226009BC296 /* LaunchScreen.storyboard */,
 				E306672E1E15F226009BC296 /* Info.plist */,
 				E30667521E17652E009BC296 /* LCTRefresh.swift */,
+				E3DE79C51E1CA903008BAB59 /* LCTRefresh.bundle */,
 			);
 			path = WPFRefresh;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 				E306672D1E15F226009BC296 /* LaunchScreen.storyboard in Resources */,
 				E306672A1E15F226009BC296 /* Assets.xcassets in Resources */,
 				E30667281E15F226009BC296 /* Main.storyboard in Resources */,
+				E3DE79C61E1CA903008BAB59 /* LCTRefresh.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +518,7 @@
 				E30667491E15F226009BC296 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E306674A1E15F226009BC296 /* Build configuration list for PBXNativeTarget "WPFRefreshTests" */ = {
 			isa = XCConfigurationList;
@@ -522,6 +527,7 @@
 				E306674C1E15F226009BC296 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E306674D1E15F226009BC296 /* Build configuration list for PBXNativeTarget "WPFRefreshUITests" */ = {
 			isa = XCConfigurationList;
@@ -530,6 +536,7 @@
 				E306674F1E15F226009BC296 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let vc: ViewController = ViewController()
         let nav: UINavigationController = UINavigationController(rootViewController: vc)
         self.window?.rootViewController = nav
-        
+    
         
         self.window?.backgroundColor = UIColor.white
         self.window?.makeKeyAndVisible()

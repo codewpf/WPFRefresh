@@ -40,7 +40,23 @@ struct LCTRefreshConst {
     
     /// Duration
     static let kAnimationDuration = 0.25
+    
+    
+    
+    // 本地化 键值
+    static let kHeaderIdle = "LCTRefreshHeaderIdleText"
+    static let kHeaderRefreshing = "LCTRefreshHeaderPullingText"
+    static let kHeaderNomoredata = "LCTRefreshHeaderRefreshingText"
+    
+    static let kFooterIdle = "LCTRefreshFooterIdleText"
+    static let kFooterRefreshing = "LCTRefreshFooterRefreshingText"
+    static let kFooterNomoredata = "LCTRefreshFooterNoMoreDataText"
+    
+    static let kLabelFont = UIFont.systemFont(ofSize: 14)
+    static let kLabelColor = UIColor(red: 90.0/255.0, green: 90.0/255.0, blue: 90.0/255.0, alpha: 1)
+
 }
+
 
 /// "进入刷新" 回调
 typealias LCTRefreshRefreshingBlock = () -> Void
@@ -89,6 +105,7 @@ class LCTRefresh: UIView {
     func prepare() {
         self.autoresizingMask = [.flexibleWidth]
         self.backgroundColor = UIColor.clear
+        self.wpf_w = UIScreen.main.bounds.width
     }
     
     override func layoutSubviews() {
@@ -349,6 +366,9 @@ class LCTRefreshHeader: LCTRefresh {
 
 class LCTRefreshFooter: LCTRefresh {
     
+    private let stateLabel: UILabel = UILabel()
+    private var stateTitles: [LCTRefreshState:String] = [:]
+
     var ignoredScrollViewContentInsetTop: CGFloat = 0.0
     
     var automaticallyRefresh: Bool = true
@@ -366,10 +386,26 @@ class LCTRefreshFooter: LCTRefresh {
         return footer
     }
     
+    
     override func prepare() {
         super.prepare()
         
         self.wpf_h = CGFloat(LCTRefreshConst.kFooterHeight)
+        
+        self.setTitle(Bundle.wpf_localizeString(key: LCTRefreshConst.kFooterIdle) ?? "", .idle)
+        self.setTitle(Bundle.wpf_localizeString(key: LCTRefreshConst.kFooterRefreshing) ?? "", .refreshing)
+        self.setTitle(Bundle.wpf_localizeString(key: LCTRefreshConst.kFooterNomoredata) ?? "", .nomoredata)
+        
+        self.stateLabel.font = LCTRefreshConst.kLabelFont
+        self.stateLabel.textColor = LCTRefreshConst.kLabelColor
+        self.stateLabel.autoresizingMask = .flexibleWidth
+        self.stateLabel.textAlignment = .center
+        self.stateLabel.backgroundColor = UIColor.clear
+        self.stateLabel.frame = self.bounds
+        self.addSubview(self.stateLabel)
+        
+        self.stateLabel.isUserInteractionEnabled = true
+        self.stateLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(stateLabelClick)))
     }
     
     func endRefreshingWithNoMoreData() {
@@ -460,6 +496,8 @@ class LCTRefreshFooter: LCTRefresh {
                     }
                 }
             }
+            
+            self.stateLabel.text = self.stateTitles[newValue]
         }
     }
     
@@ -483,6 +521,17 @@ class LCTRefreshFooter: LCTRefresh {
     
     
     
+    private func setTitle(_ title: String, _ state: LCTRefreshState) {
+        self.stateTitles[state] = title
+        self.stateLabel.text = self.stateTitles[state]
+    }
+    
+    @objc private func stateLabelClick() {
+        guard self.state == .idle else {
+            return
+        }
+        self.beginRefreshing()
+    }
     
 }
 
@@ -514,14 +563,20 @@ extension UIScrollView {
             
             if newValue != self.header {
                 self.header?.removeFromSuperview()
-                self.insertSubview(newValue!, at: 0)
-                
-                self.willChangeValue(forKey: AssociatedKey.keyHeader)
-                objc_setAssociatedObject(self, &AssociatedKey.header, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-                self.didChangeValue(forKey: AssociatedKey.keyHeader)
+                if let view = newValue {
+                    self.insertSubview(view, at: 0)
+                    
+                    self.willChangeValue(forKey: AssociatedKey.keyHeader)
+                    objc_setAssociatedObject(self, &AssociatedKey.header, view, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    self.didChangeValue(forKey: AssociatedKey.keyHeader)
+                }
             }
-            
         }
+    }
+    
+    func removeHeader() {
+        self.header?.removeFromSuperview()
+        self.header = nil
     }
     
     var footer: LCTRefreshFooter? {
@@ -529,8 +584,23 @@ extension UIScrollView {
             return objc_getAssociatedObject(self, &AssociatedKey.footer) as? LCTRefreshFooter
         }
         set {
-            objc_setAssociatedObject(self, &AssociatedKey.footer, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            
+            if newValue != self.footer {
+                self.footer?.removeFromSuperview()
+                if let view = newValue {
+                    self.insertSubview(view, at: 0)
+                    
+                    self.willChangeValue(forKey: AssociatedKey.keyFooter)
+                    objc_setAssociatedObject(self, &AssociatedKey.footer, view, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    self.didChangeValue(forKey: AssociatedKey.keyFooter)
+                }
+            }
         }
+    }
+    
+    func removeFooter() {
+        self.footer?.removeFromSuperview()
+        self.footer = nil
     }
     
     
@@ -668,7 +738,41 @@ extension UIScrollView {
     }
 }
 
-
+extension Bundle {
+    
+    static func wpf_bundle() -> Bundle? {
+        guard let path = Bundle(for: LCTRefresh.self).path(forResource: "LCTRefresh", ofType: "bundle"),
+              let bundle = Bundle(path: path) else {
+            return nil
+        }
+        return bundle
+    }
+    
+    static func wpf_localizeString(key: String, value: String? = nil) -> String? {
+        guard var language = NSLocale.preferredLanguages.first else {
+            return nil
+        }
+        if language.hasPrefix("en") {
+            language = "en"
+        } else if language.hasPrefix("zh") {
+            if language.range(of: "Hans") != nil {
+                language = "zh-Hans"
+            } else {
+                language = "zh-Hant"
+            }
+        } else {
+            language = "en"
+        }
+        
+        guard let path = Bundle.wpf_bundle()?.path(forResource: language, ofType: "lproj") ,let bundle = Bundle(path: path) else {
+            return nil
+        }
+        
+        let v = bundle.localizedString(forKey: key, value: value, table: nil)
+        return Bundle.main.localizedString(forKey: key, value: v, table: nil)
+    }
+    
+}
 
 
 
