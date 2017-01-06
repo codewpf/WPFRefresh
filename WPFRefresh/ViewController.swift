@@ -35,13 +35,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) { 
             self.datas(true)
         }
+        
     }
     
     var count = 0
     
     func datas(_ remove: Bool) {
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) { [weak self] in
             
             if remove {
                 self?.dataSource.removeAll()

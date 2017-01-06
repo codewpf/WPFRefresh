@@ -34,9 +34,12 @@ struct LCTRefreshConst {
     static let kKeyPathPanState = "state"
     
     /// HeaderHeight
-    static let kHeaderHeight = 54
+    static let kHeaderHeight: CGFloat = 54.0
     /// FooterHeight
-    static let kFooterHeight = 44
+    static let kFooterHeight: CGFloat = 44.0
+    
+    // 
+    static let kScreenWidth: CGFloat = UIScreen.main.bounds.width
     
     /// Duration
     static let kAnimationDuration = 0.25
@@ -105,7 +108,7 @@ class LCTRefresh: UIView {
     func prepare() {
         self.autoresizingMask = [.flexibleWidth]
         self.backgroundColor = UIColor.clear
-        self.wpf_w = UIScreen.main.bounds.width
+        self.wpf_w = LCTRefreshConst.kScreenWidth
     }
     
     override func layoutSubviews() {
@@ -247,6 +250,13 @@ class LCTRefreshHeader: LCTRefresh {
     
     var ignoredScrollViewContentInsetTop: CGFloat = 0.0
     var insetTDeldta: CGFloat = 0.0
+    var image: UIImageView = UIImageView()
+    
+    /// 为了能下拉更多看的更清楚，时间旋转的时候按照76%大小
+    let biggestPercent: CGFloat = 1.3 // 1.3 * 0.76 = 0.988 < 1
+    /// 图片时间旋转时候的大小
+    let imageWidth: CGFloat = (LCTRefreshConst.kHeaderHeight * 0.76)
+
     
     static func header(block refreshingBlock: @escaping LCTRefreshRefreshingBlock) -> LCTRefreshHeader {
         let header = LCTRefreshHeader()
@@ -256,14 +266,26 @@ class LCTRefreshHeader: LCTRefresh {
     
     override func prepare() {
         super.prepare()
-        
-        self.wpf_h = CGFloat(LCTRefreshConst.kHeaderHeight)
+        self.wpf_h = LCTRefreshConst.kHeaderHeight
     }
     
     override func placeSubviews() {
         super.placeSubviews()
         
         self.wpf_y = -self.wpf_h - self.ignoredScrollViewContentInsetTop
+        
+        
+        
+        guard self.image.constraints.count == 0 else {
+            return
+        }
+        self.image.center = CGPoint(x: LCTRefreshConst.kScreenWidth/2, y: LCTRefreshConst.kHeaderHeight/2)
+        self.image.contentMode = .scaleToFill
+        self.image.image = UIImage(contentsOfFile: Bundle.wpf_bundle()?.path(forResource: "lct_image", ofType: "png") ?? "")
+        self.addSubview(self.image)
+        
+    
+        
     }
     
     fileprivate override func scrollViewContentOffsetDidChange(_ change: [NSKeyValueChangeKey : Any]?) {
@@ -316,6 +338,18 @@ class LCTRefreshHeader: LCTRefresh {
         
     }
     
+    override var pullingPercent: Float {
+        get { return self.privatePullingPercent! }
+        set {
+            self.privatePullingPercent = newValue
+            if newValue < Float(self.biggestPercent) {
+                self.image.wpf_size = CGSize(width: self.imageWidth*CGFloat(newValue), height: self.imageWidth*CGFloat(newValue))
+            } else {
+                self.image.wpf_size = CGSize(width: self.imageWidth*self.biggestPercent, height: self.imageWidth*self.biggestPercent)
+            }
+        }
+    }
+    
     
     override var state: LCTRefreshState {
         get { return self.privateState! }
@@ -340,6 +374,7 @@ class LCTRefreshHeader: LCTRefresh {
                         block()
                     }
                 })
+                self.animating(true)
             } else if newValue == .refreshing {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: LCTRefreshConst.kAnimationDuration, animations: { 
@@ -350,6 +385,7 @@ class LCTRefreshHeader: LCTRefresh {
                         self.executeRefreshingBlock()
                     })
                 }
+                self.animating(false)
             }
         }
     }
@@ -359,6 +395,21 @@ class LCTRefreshHeader: LCTRefresh {
         self.endRefreshingCompletionBlock = completion
         DispatchQueue.main.async {
             self.state = .idle
+        }
+    }
+    
+    private func animating(_ stop: Bool) {
+        if stop == false {
+            let animate = CABasicAnimation(keyPath: "transform.rotation")
+            animate.toValue = 2 * M_PI
+            animate.duration = 0.75
+            animate.repeatCount = MAXFLOAT
+            self.image.layer.add(animate, forKey: nil)
+            UIView.animate(withDuration: 0.2, animations: {
+                self.image.transform.rotated(by: CGFloat(2 * M_PI))
+            })
+        } else {
+            self.image.layer.removeAllAnimations()
         }
     }
     
@@ -390,7 +441,7 @@ class LCTRefreshFooter: LCTRefresh {
     override func prepare() {
         super.prepare()
         
-        self.wpf_h = CGFloat(LCTRefreshConst.kFooterHeight)
+        self.wpf_h = LCTRefreshConst.kFooterHeight
         
         self.setTitle(Bundle.wpf_localizeString(key: LCTRefreshConst.kFooterIdle) ?? "", .idle)
         self.setTitle(Bundle.wpf_localizeString(key: LCTRefreshConst.kFooterRefreshing) ?? "", .refreshing)
