@@ -24,22 +24,29 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.tableView.tableFooterView = UIView()
         self.view.addSubview(self.tableView)
         
-        self.tableView.header = LCTRefreshHeader.header { [weak self] in
+        self.tableView.header = WPFRefreshHeader.header { [weak self] in
             self?.datas(true)
         }
         
-        self.tableView.footer = LCTRefreshFooter.footer { [weak self] in
-            self?.datas(false)
-        }
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) { 
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()) {
             self.datas(true)
+            self.tableView.header?.beginRefreshing()
         }
         
     }
     
-    var count = 0
+    private func addFooter() {
+        if self.tableView.footer != nil {
+            self.tableView.footer?.resetNoMoreData()
+        } else {
+            self.tableView.footer = WPFRefreshFooter.footer { [weak self] in
+                self?.datas(false)
+            }
+        }
+    }
     
+    var count = 0
     func datas(_ remove: Bool) {
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) { [weak self] in
@@ -57,11 +64,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if remove {
                 self?.count = 0
                 self?.tableView.header?.endRefreshing()
+                
+                self?.addFooter()
+                
             } else {
                 self?.count += 1
-                self?.tableView.footer?.endRefreshing()
                 if self?.count == 2{
-                    self?.tableView.removeFooter()
+                    self?.tableView.footer?.endRefreshingWithNoMoreData()
+                } else {
+                    self?.tableView.footer?.endRefreshing()
                 }
             }
         }
@@ -80,7 +91,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
         }
-        print(indexPath.row,self.dataSource.count)
         cell?.textLabel?.text = "\(indexPath.row) --- \(self.dataSource[indexPath.row])"
         return cell!
     }

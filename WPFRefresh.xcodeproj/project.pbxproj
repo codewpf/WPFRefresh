@@ -14,9 +14,8 @@
 		E306672D1E15F226009BC296 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E306672B1E15F226009BC296 /* LaunchScreen.storyboard */; };
 		E30667381E15F226009BC296 /* WPFRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667371E15F226009BC296 /* WPFRefreshTests.swift */; };
 		E30667431E15F226009BC296 /* WPFRefreshUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667421E15F226009BC296 /* WPFRefreshUITests.swift */; };
-		E30667511E15F24A009BC296 /* LCTTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667501E15F24A009BC296 /* LCTTimer.swift */; };
-		E30667531E17652E009BC296 /* LCTRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667521E17652E009BC296 /* LCTRefresh.swift */; };
-		E3DE79C61E1CA903008BAB59 /* LCTRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E3DE79C51E1CA903008BAB59 /* LCTRefresh.bundle */; };
+		E30667531E17652E009BC296 /* WPFRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30667521E17652E009BC296 /* WPFRefresh.swift */; };
+		E3BA6D651E1FA18D00845941 /* WPFRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E3BA6D641E1FA18D00845941 /* WPFRefresh.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,9 +49,8 @@
 		E306673E1E15F226009BC296 /* WPFRefreshUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WPFRefreshUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E30667421E15F226009BC296 /* WPFRefreshUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPFRefreshUITests.swift; sourceTree = "<group>"; };
 		E30667441E15F226009BC296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E30667501E15F24A009BC296 /* LCTTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCTTimer.swift; sourceTree = "<group>"; };
-		E30667521E17652E009BC296 /* LCTRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCTRefresh.swift; sourceTree = "<group>"; };
-		E3DE79C51E1CA903008BAB59 /* LCTRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LCTRefresh.bundle; sourceTree = "<group>"; };
+		E30667521E17652E009BC296 /* WPFRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPFRefresh.swift; sourceTree = "<group>"; };
+		E3BA6D641E1FA18D00845941 /* WPFRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WPFRefresh.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,14 +102,13 @@
 			isa = PBXGroup;
 			children = (
 				E30667221E15F226009BC296 /* AppDelegate.swift */,
-				E30667501E15F24A009BC296 /* LCTTimer.swift */,
 				E30667241E15F226009BC296 /* ViewController.swift */,
 				E30667261E15F226009BC296 /* Main.storyboard */,
 				E30667291E15F226009BC296 /* Assets.xcassets */,
 				E306672B1E15F226009BC296 /* LaunchScreen.storyboard */,
 				E306672E1E15F226009BC296 /* Info.plist */,
-				E30667521E17652E009BC296 /* LCTRefresh.swift */,
-				E3DE79C51E1CA903008BAB59 /* LCTRefresh.bundle */,
+				E30667521E17652E009BC296 /* WPFRefresh.swift */,
+				E3BA6D641E1FA18D00845941 /* WPFRefresh.bundle */,
 			);
 			path = WPFRefresh;
 			sourceTree = "<group>";
@@ -243,9 +240,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E306672D1E15F226009BC296 /* LaunchScreen.storyboard in Resources */,
+				E3BA6D651E1FA18D00845941 /* WPFRefresh.bundle in Resources */,
 				E306672A1E15F226009BC296 /* Assets.xcassets in Resources */,
 				E30667281E15F226009BC296 /* Main.storyboard in Resources */,
-				E3DE79C61E1CA903008BAB59 /* LCTRefresh.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,9 +268,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E30667251E15F226009BC296 /* ViewController.swift in Sources */,
-				E30667531E17652E009BC296 /* LCTRefresh.swift in Sources */,
+				E30667531E17652E009BC296 /* WPFRefresh.swift in Sources */,
 				E30667231E15F226009BC296 /* AppDelegate.swift in Sources */,
-				E30667511E15F24A009BC296 /* LCTTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

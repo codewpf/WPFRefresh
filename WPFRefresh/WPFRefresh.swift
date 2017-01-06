@@ -1,5 +1,5 @@
 //
-//  LCTRefresh.swift
+//  WPFRefresh.swift
 //  WPFRefresh
 //
 //  Created by wpf on 2016/12/31.
@@ -11,21 +11,19 @@ import ObjectiveC
 
 
 /// 刷新状态
-enum LCTRefreshState {
+enum WPFRefreshState {
     /// "普通闲置" 状态
     case idle
     /// "松开就刷新" 状态
     case pulling
     /// "正在刷新" 状态
     case refreshing
-    /// "即将刷新" 状态
-    case willrefresh
     /// "全部数据完毕，没有更多数据" 状态
     case nomoredata
 }
 
 /// 常量定义
-struct LCTRefreshConst {
+struct WPFRefreshConst {
     /// KVO-ContentOffset
     static let kKeyPathContentOffset = "contentOffset"
     /// KVO-ContentSize
@@ -47,13 +45,13 @@ struct LCTRefreshConst {
     
     
     // 本地化 键值
-    static let kHeaderIdle = "LCTRefreshHeaderIdleText"
-    static let kHeaderRefreshing = "LCTRefreshHeaderPullingText"
-    static let kHeaderNomoredata = "LCTRefreshHeaderRefreshingText"
+    static let kHeaderIdle = "WPFRefreshHeaderIdleText"
+    static let kHeaderRefreshing = "WPFRefreshHeaderPullingText"
+    static let kHeaderNomoredata = "WPFRefreshHeaderRefreshingText"
     
-    static let kFooterIdle = "LCTRefreshFooterIdleText"
-    static let kFooterRefreshing = "LCTRefreshFooterRefreshingText"
-    static let kFooterNomoredata = "LCTRefreshFooterNoMoreDataText"
+    static let kFooterIdle = "WPFRefreshFooterIdleText"
+    static let kFooterRefreshing = "WPFRefreshFooterRefreshingText"
+    static let kFooterNomoredata = "WPFRefreshFooterNoMoreDataText"
     
     static let kLabelFont = UIFont.systemFont(ofSize: 14)
     static let kLabelColor = UIColor(red: 90.0/255.0, green: 90.0/255.0, blue: 90.0/255.0, alpha: 1)
@@ -62,15 +60,15 @@ struct LCTRefreshConst {
 
 
 /// "进入刷新" 回调
-typealias LCTRefreshRefreshingBlock = () -> Void
+typealias WPFRefreshRefreshingBlock = () -> Void
 /// "开始刷新后" 回调
-typealias LCTRefreshBeginRefreshCompletionBlock = () -> Void
+typealias WPFRefreshBeginRefreshCompletionBlock = () -> Void
 /// "完成刷新后" 回调
-typealias LCTRefreshEndRefreshCompletionBlock = () -> Void
+typealias WPFRefreshEndRefreshCompletionBlock = () -> Void
 
 
 
-class LCTRefresh: UIView {
+class WPFRefresh: UIView {
     
     var pan: UIPanGestureRecognizer?
     
@@ -80,16 +78,16 @@ class LCTRefresh: UIView {
     var originalInset: UIEdgeInsets?
     
     /// 正在刷新 的回调
-    var refreshingBlock: LCTRefreshRefreshingBlock?
+    var refreshingBlock: WPFRefreshRefreshingBlock?
     /// 开始刷新后 的回调
-    var beginRefreshingCompletionBlock: LCTRefreshBeginRefreshCompletionBlock?
+    var beginRefreshingCompletionBlock: WPFRefreshBeginRefreshCompletionBlock?
     /// 刷新完成后 的回调
-    var endRefreshingCompletionBlock: LCTRefreshEndRefreshCompletionBlock?
+    var endRefreshingCompletionBlock: WPFRefreshEndRefreshCompletionBlock?
     
     /// 当前状态
-    fileprivate var privateState: LCTRefreshState?
+    private var privateState: WPFRefreshState?
     
-    fileprivate var privatePullingPercent: Float?
+    private var privatePullingPercent: Float?
     
     //MARK: - 初始化
     override init(frame: CGRect) {
@@ -108,7 +106,7 @@ class LCTRefresh: UIView {
     func prepare() {
         self.autoresizingMask = [.flexibleWidth]
         self.backgroundColor = UIColor.clear
-        self.wpf_w = LCTRefreshConst.kScreenWidth
+        self.wpf_w = WPFRefreshConst.kScreenWidth
     }
     
     override func layoutSubviews() {
@@ -123,7 +121,7 @@ class LCTRefresh: UIView {
     }
     
     /// 当前state "计算属性"
-    fileprivate var state: LCTRefreshState {
+    fileprivate var state: WPFRefreshState {
         get { return self.privateState! }
         set {
             self.privateState = newValue
@@ -158,16 +156,16 @@ class LCTRefresh: UIView {
     
     //MARK: - 监听
     private func addObservers() {
-        self.scrollView?.addObserver(self, forKeyPath: LCTRefreshConst.kKeyPathContentOffset, options: [.old, .new], context: nil)
-        self.scrollView?.addObserver(self, forKeyPath: LCTRefreshConst.kKeyPathContentSize, options: [.old, .new], context: nil)
+        self.scrollView?.addObserver(self, forKeyPath: WPFRefreshConst.kKeyPathContentOffset, options: [.old, .new], context: nil)
+        self.scrollView?.addObserver(self, forKeyPath: WPFRefreshConst.kKeyPathContentSize, options: [.old, .new], context: nil)
         self.pan = self.scrollView?.panGestureRecognizer
-        self.pan?.addObserver(self, forKeyPath: LCTRefreshConst.kKeyPathPanState, options: [.old, .new], context: nil)
+        self.pan?.addObserver(self, forKeyPath: WPFRefreshConst.kKeyPathPanState, options: [.old, .new], context: nil)
     }
     
     private func removeObservers() {
-        self.superview?.removeObserver(self, forKeyPath: LCTRefreshConst.kKeyPathContentOffset, context: nil)
-        self.superview?.removeObserver(self, forKeyPath: LCTRefreshConst.kKeyPathContentSize, context: nil)
-        self.pan?.removeObserver(self, forKeyPath: LCTRefreshConst.kKeyPathPanState, context: nil)
+        self.superview?.removeObserver(self, forKeyPath: WPFRefreshConst.kKeyPathContentOffset, context: nil)
+        self.superview?.removeObserver(self, forKeyPath: WPFRefreshConst.kKeyPathContentSize, context: nil)
+        self.pan?.removeObserver(self, forKeyPath: WPFRefreshConst.kKeyPathPanState, context: nil)
         self.pan = nil
     }
     
@@ -178,7 +176,7 @@ class LCTRefresh: UIView {
         }
         
         // 隐藏状态下也要处理
-        if keyPath == LCTRefreshConst.kKeyPathContentSize {
+        if keyPath == WPFRefreshConst.kKeyPathContentSize {
             self.scrollViewContentSizeDidChange(change)
         }
         
@@ -186,9 +184,9 @@ class LCTRefresh: UIView {
         guard self.isHidden == false else {
             return
         }
-        if keyPath == LCTRefreshConst.kKeyPathContentOffset {
+        if keyPath == WPFRefreshConst.kKeyPathContentOffset {
             self.scrollViewContentOffsetDidChange(change)
-        } else if keyPath == LCTRefreshConst.kKeyPathPanState {
+        } else if keyPath == WPFRefreshConst.kKeyPathPanState {
             self.scrollViewPanStateDidChange(change)
         }
         
@@ -203,7 +201,7 @@ class LCTRefresh: UIView {
     func beginRefreshing(completion: ((Swift.Void) -> Swift.Void)? = nil) {
         self.beginRefreshingCompletionBlock = completion
         
-        UIView.animate(withDuration: LCTRefreshConst.kAnimationDuration) {
+        UIView.animate(withDuration: WPFRefreshConst.kAnimationDuration) {
             self.alpha = 1.0
         }
         
@@ -226,7 +224,7 @@ class LCTRefresh: UIView {
     }
     
     func isRefreshing() -> Bool {
-        return (self.state == .refreshing || self.state == .willrefresh)
+        return (self.state == .refreshing)
     }
     
     /// 子类 执行刷新回调
@@ -246,7 +244,7 @@ class LCTRefresh: UIView {
 
 
 
-class LCTRefreshHeader: LCTRefresh {
+class WPFRefreshHeader: WPFRefresh {
     
     var ignoredScrollViewContentInsetTop: CGFloat = 0.0
     var insetTDeldta: CGFloat = 0.0
@@ -255,18 +253,18 @@ class LCTRefreshHeader: LCTRefresh {
     /// 为了能下拉更多看的更清楚，时间旋转的时候按照76%大小
     let biggestPercent: CGFloat = 1.3 // 1.3 * 0.76 = 0.988 < 1
     /// 图片时间旋转时候的大小
-    let imageWidth: CGFloat = (LCTRefreshConst.kHeaderHeight * 0.76)
+    let imageWidth: CGFloat = (WPFRefreshConst.kHeaderHeight * 0.76)
 
     
-    static func header(block refreshingBlock: @escaping LCTRefreshRefreshingBlock) -> LCTRefreshHeader {
-        let header = LCTRefreshHeader()
+    static func header(block refreshingBlock: @escaping WPFRefreshRefreshingBlock) -> WPFRefreshHeader {
+        let header = WPFRefreshHeader()
         header.refreshingBlock = refreshingBlock
         return header
     }
     
     override func prepare() {
         super.prepare()
-        self.wpf_h = LCTRefreshConst.kHeaderHeight
+        self.wpf_h = WPFRefreshConst.kHeaderHeight
     }
     
     override func placeSubviews() {
@@ -275,17 +273,13 @@ class LCTRefreshHeader: LCTRefresh {
         self.wpf_y = -self.wpf_h - self.ignoredScrollViewContentInsetTop
         
         
-        
         guard self.image.constraints.count == 0 else {
             return
         }
-        self.image.center = CGPoint(x: LCTRefreshConst.kScreenWidth/2, y: LCTRefreshConst.kHeaderHeight/2)
+        self.image.center = CGPoint(x: WPFRefreshConst.kScreenWidth/2, y: WPFRefreshConst.kHeaderHeight/2)
         self.image.contentMode = .scaleToFill
-        self.image.image = UIImage(contentsOfFile: Bundle.wpf_bundle()?.path(forResource: "lct_image", ofType: "png") ?? "")
+        self.image.image = UIImage(contentsOfFile: Bundle.wpf_bundle()?.path(forResource: "wpf_image", ofType: "png") ?? "")
         self.addSubview(self.image)
-        
-    
-        
     }
     
     fileprivate override func scrollViewContentOffsetDidChange(_ change: [NSKeyValueChangeKey : Any]?) {
@@ -339,9 +333,9 @@ class LCTRefreshHeader: LCTRefresh {
     }
     
     override var pullingPercent: Float {
-        get { return self.privatePullingPercent! }
+        get { return super.pullingPercent }
         set {
-            self.privatePullingPercent = newValue
+            super.pullingPercent = newValue
             if newValue < Float(self.biggestPercent) {
                 self.image.wpf_size = CGSize(width: self.imageWidth*CGFloat(newValue), height: self.imageWidth*CGFloat(newValue))
             } else {
@@ -351,11 +345,11 @@ class LCTRefreshHeader: LCTRefresh {
     }
     
     
-    override var state: LCTRefreshState {
-        get { return self.privateState! }
+    override var state: WPFRefreshState {
+        get { return super.state }
         set {
             
-            let oldState = self.privateState
+            let oldState = super.state
             guard oldState != newValue else {
                 return
             }
@@ -366,7 +360,7 @@ class LCTRefreshHeader: LCTRefresh {
                     return
                 }
                 
-                UIView.animate(withDuration: LCTRefreshConst.kAnimationDuration, animations: { 
+                UIView.animate(withDuration: WPFRefreshConst.kAnimationDuration, animations: { 
                     self.scrollView?.wpf_insetT += self.insetTDeldta
                 }, completion: { (_) in
                     self.pullingPercent = 0.0
@@ -377,7 +371,7 @@ class LCTRefreshHeader: LCTRefresh {
                 self.animating(true)
             } else if newValue == .refreshing {
                 DispatchQueue.main.async {
-                    UIView.animate(withDuration: LCTRefreshConst.kAnimationDuration, animations: { 
+                    UIView.animate(withDuration: WPFRefreshConst.kAnimationDuration, animations: { 
                         let top: CGFloat = ((self.originalInset?.top)!  + self.wpf_h)
                         self.scrollView?.wpf_insetT = top
                         self.scrollView?.contentOffset = CGPoint(x: 0, y: -top)
@@ -415,13 +409,14 @@ class LCTRefreshHeader: LCTRefresh {
     
 }
 
-class LCTRefreshFooter: LCTRefresh {
+class WPFRefreshFooter: WPFRefresh {
     
     private let stateLabel: UILabel = UILabel()
-    private var stateTitles: [LCTRefreshState:String] = [:]
+    private var stateTitles: [WPFRefreshState:String] = [:]
 
     var ignoredScrollViewContentInsetTop: CGFloat = 0.0
     
+    // 是否自动刷新
     var automaticallyRefresh: Bool = true
     var isAutomaticallyRefresh: Bool {
         get {
@@ -431,8 +426,8 @@ class LCTRefreshFooter: LCTRefresh {
     
     var triggerAutomaticallyRefreshPercent: CGFloat = 1.0
     
-    static func footer(block refreshingBlock: @escaping LCTRefreshRefreshingBlock) -> LCTRefreshFooter {
-        let footer = LCTRefreshFooter()
+    static func footer(block refreshingBlock: @escaping WPFRefreshRefreshingBlock) -> WPFRefreshFooter {
+        let footer = WPFRefreshFooter()
         footer.refreshingBlock = refreshingBlock
         return footer
     }
@@ -441,22 +436,24 @@ class LCTRefreshFooter: LCTRefresh {
     override func prepare() {
         super.prepare()
         
-        self.wpf_h = LCTRefreshConst.kFooterHeight
+        self.wpf_h = WPFRefreshConst.kFooterHeight
         
-        self.setTitle(Bundle.wpf_localizeString(key: LCTRefreshConst.kFooterIdle) ?? "", .idle)
-        self.setTitle(Bundle.wpf_localizeString(key: LCTRefreshConst.kFooterRefreshing) ?? "", .refreshing)
-        self.setTitle(Bundle.wpf_localizeString(key: LCTRefreshConst.kFooterNomoredata) ?? "", .nomoredata)
+        self.setTitle(Bundle.wpf_localizeString(key: WPFRefreshConst.kFooterIdle) ?? "", .idle)
+        self.setTitle(Bundle.wpf_localizeString(key: WPFRefreshConst.kFooterRefreshing) ?? "", .refreshing)
+        self.setTitle(Bundle.wpf_localizeString(key: WPFRefreshConst.kFooterNomoredata) ?? "", .nomoredata)
         
-        self.stateLabel.font = LCTRefreshConst.kLabelFont
-        self.stateLabel.textColor = LCTRefreshConst.kLabelColor
+        self.stateLabel.font = WPFRefreshConst.kLabelFont
+        self.stateLabel.textColor = WPFRefreshConst.kLabelColor
         self.stateLabel.autoresizingMask = .flexibleWidth
         self.stateLabel.textAlignment = .center
         self.stateLabel.backgroundColor = UIColor.clear
         self.stateLabel.frame = self.bounds
+        self.stateLabel.text = Bundle.wpf_localizeString(key: WPFRefreshConst.kFooterIdle) ?? ""
         self.addSubview(self.stateLabel)
         
         self.stateLabel.isUserInteractionEnabled = true
         self.stateLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(stateLabelClick)))
+        
     }
     
     func endRefreshingWithNoMoreData() {
@@ -489,6 +486,7 @@ class LCTRefreshFooter: LCTRefresh {
     }
     fileprivate override func scrollViewContentOffsetDidChange(_ change: [NSKeyValueChangeKey : Any]?) {
         super.scrollViewContentOffsetDidChange(change)
+        
         guard self.state == .idle, self.automaticallyRefresh == true, self.wpf_y != 0, let scroll = self.scrollView else {
             return
         }
@@ -528,16 +526,16 @@ class LCTRefreshFooter: LCTRefresh {
         
     }
     
-    override var state: LCTRefreshState {
-        get { return self.privateState! }
+    override var state: WPFRefreshState {
+        get { return super.state }
         set {
-            let oldState = self.privateState
+            let oldState = super.state
             guard oldState != newValue else {
                 return
             }
             super.state = newValue
             if newValue == .refreshing {
-                DispatchQueue.main.asyncAfter(deadline: .init(uptimeNanoseconds: 1), execute: {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now(), execute: {
                     self.executeRefreshingBlock()
                 })
             } else if newValue == .nomoredata || newValue == .idle {
@@ -572,7 +570,7 @@ class LCTRefreshFooter: LCTRefresh {
     
     
     
-    private func setTitle(_ title: String, _ state: LCTRefreshState) {
+    private func setTitle(_ title: String, _ state: WPFRefreshState) {
         self.stateTitles[state] = title
         self.stateLabel.text = self.stateTitles[state]
     }
@@ -606,9 +604,9 @@ extension UIScrollView {
         static let keyFooter: String = "footer"
     }
     
-    var header: LCTRefreshHeader? {
+    var header: WPFRefreshHeader? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKey.header) as? LCTRefreshHeader
+            return objc_getAssociatedObject(self, &AssociatedKey.header) as? WPFRefreshHeader
         }
         set {
             
@@ -630,9 +628,9 @@ extension UIScrollView {
         self.header = nil
     }
     
-    var footer: LCTRefreshFooter? {
+    var footer: WPFRefreshFooter? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKey.footer) as? LCTRefreshFooter
+            return objc_getAssociatedObject(self, &AssociatedKey.footer) as? WPFRefreshFooter
         }
         set {
             
@@ -792,7 +790,7 @@ extension UIScrollView {
 extension Bundle {
     
     static func wpf_bundle() -> Bundle? {
-        guard let path = Bundle(for: LCTRefresh.self).path(forResource: "LCTRefresh", ofType: "bundle"),
+        guard let path = Bundle(for: WPFRefresh.self).path(forResource: "WPFRefresh", ofType: "bundle"),
               let bundle = Bundle(path: path) else {
             return nil
         }
