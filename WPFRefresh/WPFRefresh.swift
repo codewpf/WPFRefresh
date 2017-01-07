@@ -9,9 +9,8 @@
 import UIKit
 import ObjectiveC
 
-
 /// 刷新状态
-enum WPFRefreshState {
+fileprivate enum WPFRefreshState {
     /// "普通闲置" 状态
     case idle
     /// "松开就刷新" 状态
@@ -23,7 +22,7 @@ enum WPFRefreshState {
 }
 
 /// 常量定义
-struct WPFRefreshConst {
+fileprivate struct WPFRefreshConst {
     /// KVO-ContentOffset
     static let kKeyPathContentOffset = "contentOffset"
     /// KVO-ContentSize
@@ -69,30 +68,28 @@ typealias WPFRefreshEndRefreshCompletionBlock = () -> Void
 
 
 class WPFRefresh: UIView {
-    
-    var pan: UIPanGestureRecognizer?
-    
-    /// 父控件
-    var scrollView: UIScrollView?
-    /// 记录scrollView刚开始的inset
-    var originalInset: UIEdgeInsets?
-    
-    /// 正在刷新 的回调
-    var refreshingBlock: WPFRefreshRefreshingBlock?
-    /// 开始刷新后 的回调
-    var beginRefreshingCompletionBlock: WPFRefreshBeginRefreshCompletionBlock?
-    /// 刷新完成后 的回调
-    var endRefreshingCompletionBlock: WPFRefreshEndRefreshCompletionBlock?
-    
     /// 当前状态
     private var privateState: WPFRefreshState?
-    
+    ///
     private var privatePullingPercent: Float?
+
+    /// UIScrollView Pan 手势
+    fileprivate var pan: UIPanGestureRecognizer?
+    /// 父控件
+    fileprivate var scrollView: UIScrollView?
+    /// 记录scrollView刚开始的inset
+    fileprivate var originalInset: UIEdgeInsets?
+    
+    /// 正在刷新 的回调
+    fileprivate var refreshingBlock: WPFRefreshRefreshingBlock?
+    /// 开始刷新后 的回调
+    fileprivate var beginRefreshingCompletionBlock: WPFRefreshBeginRefreshCompletionBlock?
+    /// 刷新完成后 的回调
+    fileprivate var endRefreshingCompletionBlock: WPFRefreshEndRefreshCompletionBlock?
     
     //MARK: - 初始化
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         
         self.prepare()
         
@@ -110,15 +107,12 @@ class WPFRefresh: UIView {
     }
     
     override func layoutSubviews() {
-        
         self.placeSubviews()
         
         super.layoutSubviews()
     }
     
-    func placeSubviews() {
-        
-    }
+    func placeSubviews() {}
     
     /// 当前state "计算属性"
     fileprivate var state: WPFRefreshState {
@@ -248,12 +242,12 @@ class WPFRefreshHeader: WPFRefresh {
     
     var ignoredScrollViewContentInsetTop: CGFloat = 0.0
     var insetTDeldta: CGFloat = 0.0
-    var image: UIImageView = UIImageView()
+    private var image: UIImageView = UIImageView()
     
     /// 为了能下拉更多看的更清楚，时间旋转的时候按照76%大小
-    let biggestPercent: CGFloat = 1.3 // 1.3 * 0.76 = 0.988 < 1
+    private let biggestPercent: CGFloat = 1.3 // 1.3 * 0.76 = 0.988 < 1
     /// 图片时间旋转时候的大小
-    let imageWidth: CGFloat = (WPFRefreshConst.kHeaderHeight * 0.76)
+    private let imageWidth: CGFloat = (WPFRefreshConst.kHeaderHeight * 0.76)
 
     
     static func header(block refreshingBlock: @escaping WPFRefreshRefreshingBlock) -> WPFRefreshHeader {
@@ -332,7 +326,7 @@ class WPFRefreshHeader: WPFRefresh {
         
     }
     
-    override var pullingPercent: Float {
+    override fileprivate var pullingPercent: Float {
         get { return super.pullingPercent }
         set {
             super.pullingPercent = newValue
@@ -345,7 +339,7 @@ class WPFRefreshHeader: WPFRefresh {
     }
     
     
-    override var state: WPFRefreshState {
+    override fileprivate var state: WPFRefreshState {
         get { return super.state }
         set {
             
@@ -424,6 +418,7 @@ class WPFRefreshFooter: WPFRefresh {
         }
     }
     
+    /// 空间显示比例自动刷新 默认1.0
     var triggerAutomaticallyRefreshPercent: CGFloat = 1.0
     
     static func footer(block refreshingBlock: @escaping WPFRefreshRefreshingBlock) -> WPFRefreshFooter {
@@ -526,7 +521,7 @@ class WPFRefreshFooter: WPFRefresh {
         
     }
     
-    override var state: WPFRefreshState {
+    override fileprivate var state: WPFRefreshState {
         get { return super.state }
         set {
             let oldState = super.state
@@ -609,7 +604,6 @@ extension UIScrollView {
             return objc_getAssociatedObject(self, &AssociatedKey.header) as? WPFRefreshHeader
         }
         set {
-            
             if newValue != self.header {
                 self.header?.removeFromSuperview()
                 if let view = newValue {
@@ -651,9 +645,6 @@ extension UIScrollView {
         self.footer?.removeFromSuperview()
         self.footer = nil
     }
-    
-    
-    
 }
 
 
@@ -788,7 +779,6 @@ extension UIScrollView {
 }
 
 extension Bundle {
-    
     static func wpf_bundle() -> Bundle? {
         guard let path = Bundle(for: WPFRefresh.self).path(forResource: "WPFRefresh", ofType: "bundle"),
               let bundle = Bundle(path: path) else {

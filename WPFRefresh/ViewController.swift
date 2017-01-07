@@ -28,7 +28,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self?.datas(true)
         }
         
-        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()) {
             self.datas(true)
             self.tableView.header?.beginRefreshing()
