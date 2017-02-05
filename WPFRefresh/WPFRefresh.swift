@@ -439,7 +439,6 @@ class WPFRefreshFooter: WPFRefresh {
         
         self.stateLabel.font = WPFRefreshConst.kLabelFont
         self.stateLabel.textColor = WPFRefreshConst.kLabelColor
-        self.stateLabel.autoresizingMask = .flexibleWidth
         self.stateLabel.textAlignment = .center
         self.stateLabel.backgroundColor = UIColor.clear
         self.stateLabel.frame = self.bounds
